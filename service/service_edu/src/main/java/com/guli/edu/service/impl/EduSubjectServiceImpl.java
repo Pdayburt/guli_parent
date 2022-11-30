@@ -28,11 +28,8 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     @Override
     public void saveSubject(MultipartFile file,EduSubjectService eduSubjectService) {
-
         try {
-
             EasyExcel.read(file.getInputStream(), SubjectData.class, new SubjectExcelListener(eduSubjectService)).sheet().doRead();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,28 +37,21 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     @Override
     public List<FirstSubject> getAllFirstAndSecondSubject() {
-
         LambdaQueryWrapper<EduSubject> eduSubjectFirstWrapper = new LambdaQueryWrapper<>();
         eduSubjectFirstWrapper
                 .eq(EduSubject::getParentId, '0');
         List<EduSubject> firstSubjectList = baseMapper.selectList(eduSubjectFirstWrapper);
-
         LambdaQueryWrapper<EduSubject> eduSubjectSecondWrapper = new LambdaQueryWrapper<>();
         eduSubjectSecondWrapper
                 .ne(EduSubject::getParentId, '0');
         List<EduSubject> secondSubjectList = baseMapper.selectList(eduSubjectSecondWrapper);
-
         List<FirstSubject> finalSubjectList = new ArrayList<>();
-
         for (int i = 0; i < firstSubjectList.size(); i++) {
-
             EduSubject eduSubject = firstSubjectList.get(i);
             FirstSubject firstSubject = new FirstSubject();
             BeanUtils.copyProperties(eduSubject, firstSubject);
             finalSubjectList.add(firstSubject);
-
             ArrayList<SecondSubject> secondSubjects = new ArrayList<>();
-
             for (int i1 = 0; i1 < secondSubjectList.size(); i1++) {
                 EduSubject eduSubject1 = secondSubjectList.get(i1);
                 if (eduSubject1.getParentId().equals(eduSubject.getId()) ){
@@ -72,7 +62,6 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
             }
             firstSubject.setChildren(secondSubjects);
         }
-
         return finalSubjectList;
     }
 }

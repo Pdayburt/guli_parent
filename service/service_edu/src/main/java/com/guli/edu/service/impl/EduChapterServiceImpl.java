@@ -31,28 +31,22 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     private EduVideoService eduVideoService;
     @Override
     public List<ChapterVo> getChapterVideoByCourseId(String courseId) {
-
         LambdaQueryWrapper<EduChapter> eduChapterLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduChapterLambdaQueryWrapper
                 .eq(EduChapter::getCourseId,courseId);
         List<EduChapter> eduChapters = baseMapper.selectList(eduChapterLambdaQueryWrapper);
-
         LambdaQueryWrapper<EduVideo> eduVideoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduVideoLambdaQueryWrapper
                 .eq(EduVideo::getCourseId, courseId);
         List<EduVideo> eduVideos = eduVideoService.list(eduVideoLambdaQueryWrapper);
-
         ArrayList<ChapterVo> chapterVoList = new ArrayList<>();
         for (int i = 0; i < eduChapters.size(); i++) {
-
             EduChapter eduChapter = eduChapters.get(i);
             ChapterVo chapterVo = new ChapterVo();
             BeanUtils.copyProperties(eduChapter,chapterVo);
             chapterVoList.add(chapterVo);
-
             ArrayList<VideoVo> videoVos = new ArrayList<>();
             for (int j = 0; j < eduVideos.size(); j++) {
-
                 EduVideo eduVideo = eduVideos.get(j);
                 if (eduVideo.getChapterId().equals(eduChapter.getId())) {
                     VideoVo videoVo = new VideoVo();
@@ -67,7 +61,6 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
 
     @Override
     public Boolean deleteChapter(String chapterId) {
-
         LambdaQueryWrapper<EduVideo> eduVideoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduVideoLambdaQueryWrapper
                 .eq(EduVideo::getChapterId,chapterId);

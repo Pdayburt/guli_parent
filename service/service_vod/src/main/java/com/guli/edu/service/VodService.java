@@ -8,4 +8,6 @@ public interface VodService {
     String uploadAliyun(MultipartFile file);
 
     void removeMoreAliyunVideo(List<String> videoList);
+
+    void removeAliyunvideoById(String videoId);
 }

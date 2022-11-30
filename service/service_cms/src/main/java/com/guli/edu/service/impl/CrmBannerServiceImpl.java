@@ -20,7 +20,7 @@ import java.util.List;
 public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner>
     implements CrmBannerService{
 
-    @Cacheable(value = "List<CrmBanner>",key = "'selectBanner'")
+    @Cacheable(key = "'selectBanner'",value = "List<CrmBanner>")
     @Override
     public List<CrmBanner> selectBanner() {
         LambdaQueryWrapper<CrmBanner> crmBannerLambdaQueryWrapper = new LambdaQueryWrapper<>();

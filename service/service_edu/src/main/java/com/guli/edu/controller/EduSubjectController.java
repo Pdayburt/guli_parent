@@ -22,15 +22,12 @@ public class EduSubjectController {
 
     @PostMapping("addSubject")
     public RMap addSubject(MultipartFile file) {
-
         eduSubjectService.saveSubject(file, eduSubjectService);
-
         return RMap.ok();
     }
     //树形结构数据
     @GetMapping("getAllSubject")
     public RMap getAllSubject(){
-
         List<FirstSubject> list= eduSubjectService.getAllFirstAndSecondSubject();
         return RMap.ok().data("list", list);
     }

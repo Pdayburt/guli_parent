@@ -35,7 +35,6 @@ public class VodServiceImpl implements VodService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         UploadStreamRequest request = new UploadStreamRequest(ConstantVodUtils.ACCESS_KEY_ID,
                 ConstantVodUtils.ACCESS_KEY_SECRET, title, fileName, inputStream);
 
@@ -43,6 +42,18 @@ public class VodServiceImpl implements VodService {
         UploadStreamResponse response = uploader.uploadStream(request);
         String videoId = response.getVideoId();
         return videoId;
+    }
+    @Override
+    public void removeAliyunvideoById(String videoId) {
+        DefaultAcsClient client = InitVodClient.initVodClient(ConstantVodUtils.ACCESS_KEY_ID, ConstantVodUtils.ACCESS_KEY_SECRET);
+        DeleteVideoRequest request = new DeleteVideoRequest();
+        request.setVideoIds(videoId);
+        try {
+            client.getAcsResponse(request);
+        } catch (ClientException e) {
+            e.printStackTrace();
+            throw new GuliException(20001, "单个阿里云视频删除失败");
+        }
     }
 
     @Override
@@ -57,9 +68,11 @@ public class VodServiceImpl implements VodService {
                 client.getAcsResponse(request);
             } catch (ClientException e) {
                 e.printStackTrace();
-                throw new GuliException(20001, "阿里云视频删除失败");
+                throw new GuliException(20001, "多个阿里云视频一起删除失败");
             }
 
     }
+
+
 
 }

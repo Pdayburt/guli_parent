@@ -1,8 +1,8 @@
 package com.guli.edu.controller;
 
 import com.guli.edu.commonUtils.RMap;
+import com.guli.edu.commonUtils.RandomUtil;
 import com.guli.edu.service.MSMService;
-import com.guli.edu.utils.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;

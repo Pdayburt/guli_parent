@@ -29,22 +29,18 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
 
         EduSubject existFirstEduSubject = this.existFirstSubject(subjectData.getFirstSubjectName());
         if (existFirstEduSubject == null){
-
             existFirstEduSubject = new EduSubject();
             existFirstEduSubject.setTitle(subjectData.getFirstSubjectName());
             existFirstEduSubject.setParentId("0");
-
             eduSubjectService.save(existFirstEduSubject);
         }
 
         String pid = existFirstEduSubject.getId();
         EduSubject existSecondSubject = this.existSecondSubject(subjectData.getSecondSubjectName(), pid);
         if (existSecondSubject == null){
-
             existSecondSubject = new EduSubject();
             existSecondSubject.setTitle(subjectData.getSecondSubjectName());
             existSecondSubject.setParentId(pid);
-
             eduSubjectService.save(existSecondSubject);
         }
 
@@ -56,23 +52,19 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
     }
 
     private EduSubject existFirstSubject(String name){
-
         LambdaQueryWrapper<EduSubject> eduSubjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduSubjectLambdaQueryWrapper
                 .eq(!StringUtils.isEmpty(name), EduSubject::getTitle,name)
                 .eq(EduSubject::getParentId,0);
-
         return eduSubjectService.getOne(eduSubjectLambdaQueryWrapper);
 
     }
 
     private EduSubject existSecondSubject(String name ,String pid){
-
         LambdaQueryWrapper<EduSubject> eduSubjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduSubjectLambdaQueryWrapper
                 .eq(!StringUtils.isEmpty(name), EduSubject::getTitle, name)
                 .eq(EduSubject::getParentId, pid);
-
         return eduSubjectService.getOne(eduSubjectLambdaQueryWrapper);
     }
 }

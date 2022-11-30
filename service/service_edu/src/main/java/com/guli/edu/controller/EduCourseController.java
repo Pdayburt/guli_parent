@@ -56,21 +56,18 @@ public class EduCourseController {
 
     @PostMapping("/addCourseInfo")
     public RMap addCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
-
         String id = eduCourseService.saveCourseInfo(courseInfoVo);
         return RMap.ok().data("courseId",id);
     }
 
     @GetMapping("getCourseInfo/{courseId}")
     public RMap getCourseInfo(@PathVariable String courseId) {
-
         CourseInfoVo courseInfoVo =  eduCourseService.getCourseInfo(courseId);
         return RMap.ok().data("courseInfoVo",courseInfoVo);
     }
 
     @PostMapping("updateCourseInfo")
     public RMap updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo) {
-
         eduCourseService.updateCourseInfo(courseInfoVo);
         return RMap.ok();
     }

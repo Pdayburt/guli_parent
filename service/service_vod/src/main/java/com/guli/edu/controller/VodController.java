@@ -30,22 +30,12 @@ public class VodController {
 
     @DeleteMapping("deleteVideo/{videoId}")
     public RMap deleteVideo(@PathVariable String videoId){
-
-        DefaultAcsClient client = InitVodClient.initVodClient(ConstantVodUtils.ACCESS_KEY_ID, ConstantVodUtils.ACCESS_KEY_SECRET);
-        DeleteVideoRequest request = new DeleteVideoRequest();
-        request.setVideoIds(videoId);
-        try {
-            client.getAcsResponse(request);
-        } catch (ClientException e) {
-            e.printStackTrace();
-            throw new GuliException(20001, "阿里云视频删除失败");
-        }
+        vodService.removeAliyunvideoById(videoId);
         return RMap.ok();
     }
 
     @DeleteMapping("deleteBatch")
     public RMap deleteBatch(@RequestParam("videoList") List<String> videoList){
-
         vodService.removeMoreAliyunVideo(videoList);
         return RMap.ok();
     }

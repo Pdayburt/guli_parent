@@ -25,7 +25,6 @@ public class EduTeacherController {
     @ApiOperation("查询所有讲师")
     @GetMapping("findAll")
     public RT<List<EduTeacher>> findAll() {
-
         List<EduTeacher> list = eduTeacherService.list(null);
         return RT.ok().data(list);
     }
@@ -49,10 +48,8 @@ public class EduTeacherController {
     @GetMapping("pageTeacher")
     public RT<List<EduTeacher>> pageTeacher(@RequestParam("current") Integer current,
                                            @RequestParam("size")Integer size) {
-
         Page<EduTeacher> eduTeacherPage = new Page<>(current, size);
         eduTeacherService.page(eduTeacherPage);
-
         return RT.ok().data(eduTeacherPage.getRecords());
     }
 
@@ -61,7 +58,6 @@ public class EduTeacherController {
     public RMap pageTeacherCondition(@PathVariable("current") Integer current,
                                      @PathVariable("size")Integer size,
                                      @RequestBody(required = false) TeacherQuery teacherQuery) {
-
         Page<EduTeacher> eduTeacherPage = new Page<>(current, size);
         LambdaQueryWrapper<EduTeacher> eduTeacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduTeacherLambdaQueryWrapper
@@ -73,11 +69,9 @@ public class EduTeacherController {
         eduTeacherLambdaQueryWrapper
                 .le(!StringUtils.isEmpty(teacherQuery.getEnd()), EduTeacher::getGmtModified,teacherQuery.getEnd());
         eduTeacherLambdaQueryWrapper.orderByDesc(EduTeacher::getGmtCreate);
-
         eduTeacherService.page(eduTeacherPage, eduTeacherLambdaQueryWrapper);
         long total = eduTeacherPage.getTotal();
         List<EduTeacher> records = eduTeacherPage.getRecords();
-
         return RMap.ok().data("total", total).data("rows", records);
     }
 

@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
         e.printStackTrace();
         log.error(e.getMessage());
-        return RT.error().msg("925国际会所专用 全局异常处理已经执行了。。。。。。。");
+        return RT.error().msg("925国际会所专用全局异常处理已经执行了。。。。。。。");
     }
 
     @ExceptionHandler(ArithmeticException.class)

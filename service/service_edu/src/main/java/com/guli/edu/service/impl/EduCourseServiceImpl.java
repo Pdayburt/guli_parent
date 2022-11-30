@@ -50,34 +50,28 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     @Transactional
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
-
         EduCourse eduCourse = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int insert = baseMapper.insert(eduCourse);
-
         if (insert == 0){
             throw new GuliException(20001, "添加Course失败");
         }
-
         EduCourseDescription eduCourseDescription = new EduCourseDescription();
         eduCourseDescription.setDescription(courseInfoVo.getDescription());
         String id = eduCourse.getId();
         eduCourseDescription.setId(id);
         courseDescriptionMapper.insert(eduCourseDescription);
         return id;
-
     }
 
     @Override
     public CourseInfoVo getCourseInfo(String courseId) {
-
         EduCourse eduCourse = baseMapper.selectById(courseId);
         EduCourseDescription eduCourseDescription = courseDescriptionMapper.selectById(courseId);
         CourseInfoVo courseInfoVo = new CourseInfoVo();
         BeanUtils.copyProperties(eduCourse,courseInfoVo);
         courseInfoVo.setDescription(eduCourseDescription.getDescription());
         return courseInfoVo;
-
     }
 
     @Override
@@ -89,7 +83,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (i == 0){
             throw  new GuliException(20001, "修改course表失败");
         }
-
         EduCourseDescription eduCourseDescription = new EduCourseDescription();
         eduCourseDescription.setId(courseInfoVo.getId());
         eduCourseDescription.setDescription(courseInfoVo.getDescription());
@@ -104,13 +97,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     @Transactional
     public void removeCourse(String courseId) {
-
         courseDescriptionMapper.deleteById(courseId);
         LambdaQueryWrapper<EduChapter> eduChapterLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduChapterLambdaQueryWrapper
                 .eq(EduChapter::getCourseId,courseId);
         eduChapterService.remove(eduChapterLambdaQueryWrapper);
-        
         LambdaQueryWrapper<EduVideo> eduVideoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduVideoLambdaQueryWrapper
                 .eq(EduVideo::getCourseId,courseId);
@@ -130,7 +121,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Cacheable(value = "List<EduCourse>",key = "'List<EduCourse>'")
     @Override
     public List<EduCourse> getHotCourse() {
-
         LambdaQueryWrapper<EduCourse> eduCourseLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduCourseLambdaQueryWrapper
                 .orderByDesc(EduCourse::getGmtCreate)
