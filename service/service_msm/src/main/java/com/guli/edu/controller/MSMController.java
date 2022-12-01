@@ -22,7 +22,6 @@ public class MSMController {
 
     @GetMapping("send/{phone}")
     public RMap send(@PathVariable String phone){
-
         String s = redisTemplate.opsForValue().get(phone);
         if (!StringUtils.isEmpty(s)) return RMap.ok();
         String sixBitRandom = RandomUtil.getSixBitRandom();
@@ -34,6 +33,4 @@ public class MSMController {
             return RMap.error().msg("腾讯云短信发送失败");
         }
     }
-
-
 }
