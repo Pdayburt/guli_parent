@@ -14,9 +14,9 @@ import java.util.List;
 public interface VodClient {
 
     @DeleteMapping("/eduvod/video/deleteVideo/{videoId}")
-    public RMap deleteVideo(@PathVariable String videoId);
+    RMap deleteVideo(@PathVariable String videoId);
 
     @DeleteMapping("/eduvod/video/deleteBatch")
-    public RMap deleteBatch(@RequestParam("videoList") List<String> videoList);
+    RMap deleteBatch(@RequestParam("videoList") List<String> videoList);
 
 }

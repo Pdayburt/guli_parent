@@ -35,10 +35,12 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         eduChapterLambdaQueryWrapper
                 .eq(EduChapter::getCourseId,courseId);
         List<EduChapter> eduChapters = baseMapper.selectList(eduChapterLambdaQueryWrapper);
+
         LambdaQueryWrapper<EduVideo> eduVideoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduVideoLambdaQueryWrapper
                 .eq(EduVideo::getCourseId, courseId);
         List<EduVideo> eduVideos = eduVideoService.list(eduVideoLambdaQueryWrapper);
+
         ArrayList<ChapterVo> chapterVoList = new ArrayList<>();
         for (int i = 0; i < eduChapters.size(); i++) {
             EduChapter eduChapter = eduChapters.get(i);

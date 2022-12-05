@@ -19,6 +19,8 @@
         <module>service_cms</module>
         <module>service_msm</module>
         <module>service_userCenter</module>
+        <module>service_order</module>
+        <module>service_statistics</module>
     </modules>
 
 

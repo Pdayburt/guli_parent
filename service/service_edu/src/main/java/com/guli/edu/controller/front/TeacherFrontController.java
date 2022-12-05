@@ -32,7 +32,7 @@ public class TeacherFrontController {
         return RMap.ok().data(teacherFrontList);
     }
 
-//    @Cacheable(key = "'getTeacherFrontInfo'",value = "RMap")
+    @Cacheable(key = "'getTeacherFrontInfo'",value = "RMap")
     @GetMapping("getTeacherFrontInfo/{teacherId}")
     public RMap getTeacherFrontInfo(@PathVariable String teacherId){
         EduTeacher eduTeacher = eduTeacherService.getById(teacherId);

@@ -32,20 +32,17 @@ public class EduCourseController {
     @PostMapping("getCourseByCondition/{current}/{size}")
     public RMap getCourseByCondition(@PathVariable Integer current,
                                      @PathVariable Integer size,
-                                     @RequestBody CourseQuery courseQuery){
+                                     @RequestBody(required = false) CourseQuery courseQuery){
         Page<EduCourse> eduCoursePage = new Page<>(current, size);
         LambdaQueryWrapper<EduCourse> eduCourseLambdaQueryWrapper = new LambdaQueryWrapper<>();
         eduCourseLambdaQueryWrapper
                 .like(!StringUtils.isEmpty(courseQuery.getTitle()),EduCourse::getTitle,courseQuery.getTitle());
         eduCourseLambdaQueryWrapper
                 .eq(!StringUtils.isEmpty(courseQuery.getStatus()),EduCourse::getStatus,courseQuery.getStatus());
-
-        Page<EduCourse> eduCoursePageRes = eduCourseService.page(eduCoursePage, eduCourseLambdaQueryWrapper);
-        List<EduCourse> records = eduCoursePageRes.getRecords();
-        long total = eduCoursePageRes.getTotal();
-
+        eduCourseService.page(eduCoursePage, eduCourseLambdaQueryWrapper);
+        long total = eduCoursePage.getTotal();
+        List<EduCourse> records = eduCoursePage.getRecords();
         return RMap.ok().data("total",total).data("rows",records);
-
     }
 
     @GetMapping("getCourseList")

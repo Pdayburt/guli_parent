@@ -1,12 +1,16 @@
 package com.guli.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guli.edu.client.VodClient;
 import com.guli.edu.entity.EduChapter;
 import com.guli.edu.entity.EduCourse;
 import com.guli.edu.entity.EduCourseDescription;
 import com.guli.edu.entity.EduVideo;
+import com.guli.edu.entity.frontVo.CourseFrontVo;
+import com.guli.edu.entity.frontVo.CourseWebVo;
 import com.guli.edu.entity.vo.CourseInfoVo;
 import com.guli.edu.entity.vo.CoursePublishVo;
 import com.guli.edu.exception.GuliException;
@@ -24,7 +28,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -126,6 +132,41 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
                 .orderByDesc(EduCourse::getGmtCreate)
                 .last("limit 8");
         return baseMapper.selectList(eduCourseLambdaQueryWrapper);
+    }
+
+    @Cacheable(key = "'getCourseFrontList'",value = "Map<String, Object>")
+    @Override
+    public Map<String, Object> getCourseFrontList(Page<EduCourse> eduCoursePage, CourseFrontVo courseFrontVo) {
+        LambdaQueryWrapper<EduCourse> eduCourseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        eduCourseLambdaQueryWrapper
+                .eq(!StringUtils.isEmpty(courseFrontVo.getSubjectParentId()),EduCourse::getSubjectParentId,courseFrontVo.getSubjectParentId())
+                .eq(!StringUtils.isEmpty(courseFrontVo.getSubjectId()),EduCourse::getSubjectId,courseFrontVo.getSubjectId())
+                .orderByDesc(!StringUtils.isEmpty(courseFrontVo.getBuyCountSort()),EduCourse::getBuyCount)
+                .orderByDesc(!StringUtils.isEmpty(courseFrontVo.getGmtCreateSort()),EduCourse::getGmtCreate)
+                .orderByDesc(!StringUtils.isEmpty(courseFrontVo.getPriceSort()),EduCourse::getPrice);
+        baseMapper.selectPage(eduCoursePage,eduCourseLambdaQueryWrapper);
+        long total = eduCoursePage.getTotal();
+        List<EduCourse> records = eduCoursePage.getRecords();
+        long current = eduCoursePage.getCurrent();
+        long size = eduCoursePage.getSize();
+        long pages = eduCoursePage.getPages();
+        boolean hasPrevious = eduCoursePage.hasPrevious();
+        boolean hasNext = eduCoursePage.hasNext();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("items",records);
+        hashMap.put("current",current);
+        hashMap.put("pages",pages);
+        hashMap.put("size",size);
+        hashMap.put("total",total);
+        hashMap.put("hasNext",hasNext);
+        hashMap.put("hasPrevious",hasPrevious);
+
+        return hashMap;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfo(String courseId) {
+        return baseMapper.getBaseCourseInfo(courseId);
     }
 }
 

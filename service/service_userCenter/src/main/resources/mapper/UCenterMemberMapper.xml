@@ -27,4 +27,7 @@
         is_disabled,is_deleted,gmt_create,
         gmt_modified
     </sql>
+    <select id="countRegister" resultType="java.lang.Integer">
+        SELECT count(*) FROM ucenter_member WHERE DATE(gmt_create) = #{day}
+    </select>
 </mapper>

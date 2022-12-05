@@ -1,11 +1,15 @@
 package com.guli.edu.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.guli.edu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.guli.edu.entity.frontVo.CourseFrontVo;
+import com.guli.edu.entity.frontVo.CourseWebVo;
 import com.guli.edu.entity.vo.CourseInfoVo;
 import com.guli.edu.entity.vo.CoursePublishVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author anatkh
@@ -25,4 +29,8 @@ public interface EduCourseService extends IService<EduCourse> {
     void removeCourse(String courseId);
 
     List<EduCourse> getHotCourse();
+
+    Map<String, Object> getCourseFrontList(Page<EduCourse> eduCoursePage, CourseFrontVo courseFrontVo);
+
+    CourseWebVo getBaseCourseInfo(String courseId);
 }

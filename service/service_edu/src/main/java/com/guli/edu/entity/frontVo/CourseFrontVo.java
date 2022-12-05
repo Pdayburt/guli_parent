@@ -20,4 +20,5 @@ public class CourseFrontVo {
     private String gmtCreateSort;
     @ApiModelProperty(value = "价格排序")
     private String priceSort;
+
 }
