@@ -89,6 +89,7 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
         map.put("date_calculatedList", date_calculatedList);
         map.put("numDataList", numDataList);
         return map;
+
     }
 }
 
