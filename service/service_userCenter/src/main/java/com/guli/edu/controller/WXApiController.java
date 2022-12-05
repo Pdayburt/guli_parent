@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-@CrossOrigin
 @Controller
 @RequestMapping("api/ucenter/wx")
 public class WXApiController {

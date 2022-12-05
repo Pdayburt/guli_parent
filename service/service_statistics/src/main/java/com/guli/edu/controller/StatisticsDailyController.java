@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin
 @RestController
 @RequestMapping("staservice/sta")
 public class StatisticsDailyController {

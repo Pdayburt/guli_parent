@@ -5,7 +5,6 @@ import com.guli.edu.commonUtils.RMap;
 import org.springframework.web.bind.annotation.*;
 
 
-@CrossOrigin
 @RestController
 @RequestMapping("eduservice/user")
 public class EduLoginController {

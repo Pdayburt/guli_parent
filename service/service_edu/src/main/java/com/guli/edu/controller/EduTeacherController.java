@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api("讲师相关功能")
-@CrossOrigin
 @RestController
 @RequestMapping("eduservice/teacher")
 public class EduTeacherController {

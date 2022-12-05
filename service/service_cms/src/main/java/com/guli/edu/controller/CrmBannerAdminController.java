@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Api("后台 CrmBanner CRUD")
-@CrossOrigin
 @RestController
 @RequestMapping("/educms/bannerAdmin")
 public class CrmBannerAdminController {

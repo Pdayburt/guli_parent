@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.ws.rs.Path;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("eduvod/video")
 public class VodController {

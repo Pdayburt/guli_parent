@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
 
-@CrossOrigin
 @RestController
 @RequestMapping("edumsm/msm")
 public class MSMController {
