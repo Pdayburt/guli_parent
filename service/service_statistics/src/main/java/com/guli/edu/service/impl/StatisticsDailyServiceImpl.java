@@ -1,20 +1,16 @@
 package com.guli.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guli.edu.client.UCenterClient4Statistics;
 import com.guli.edu.commonUtils.RMap;
 import com.guli.edu.entity.StatisticsDaily;
 import com.guli.edu.mapper.StatisticsDailyMapper;
 import com.guli.edu.service.StatisticsDailyService;
-import org.apache.commons.lang.math.IEEE754rUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +85,7 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
         map.put("date_calculatedList", date_calculatedList);
         map.put("numDataList", numDataList);
         return map;
+
     }
 }
 
