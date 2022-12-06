@@ -1,4 +1,4 @@
-package com.guli.edu.entity;
+package com.guli.security.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

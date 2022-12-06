@@ -16,4 +16,5 @@ public interface PermissionService extends IService<Permission> {
 
     void removeChildById(String id);
 
+    void doAssign(String roleId, String[] permissionIds);
 }

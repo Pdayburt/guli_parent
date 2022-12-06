@@ -39,6 +39,12 @@ public class PermissionController {
         return RMap.ok();
     }
 
+    @PostMapping("doAssign")
+    public RMap doAssign(String roleId,String[] permissionIds){
+        permissionService.doAssign(roleId,permissionIds);
+        return RMap.ok();
+    }
+
 
 
 //    @Autowired

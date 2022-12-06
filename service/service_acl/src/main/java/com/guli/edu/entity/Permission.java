@@ -70,6 +70,11 @@ public class Permission implements Serializable {
     private List<Permission> children;
 
     /**
+     * 是否选中
+     */
+    @TableField(exist = false)
+    private Boolean isSelect;
+    /**
      * 状态(0:禁止,1:正常)
      */
     private Integer status;

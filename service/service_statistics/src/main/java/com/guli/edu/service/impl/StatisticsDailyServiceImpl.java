@@ -9,6 +9,7 @@ import com.guli.edu.mapper.StatisticsDailyMapper;
 import com.guli.edu.service.StatisticsDailyService;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
         implements StatisticsDailyService {
 
 
+    @Qualifier("com.guli.edu.client.UCenterClient4Statistics")
     @Autowired
     private UCenterClient4Statistics uCenterClient4Statistics;
 

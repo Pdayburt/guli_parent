@@ -3,8 +3,11 @@ package com.guli.edu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guli.edu.entity.Permission;
-import com.guli.edu.service.PermissionService;
+import com.guli.edu.entity.RolePermission;
 import com.guli.edu.mapper.PermissionMapper;
+import com.guli.edu.service.PermissionService;
+import com.guli.edu.service.RolePermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,55 +22,64 @@ import java.util.List;
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>
         implements PermissionService {
 
+    @Autowired
+    private RolePermissionService rolePermissionService;
+
     @Override
     public List<Permission> queryAllMenu() {
-        List<Permission> permissions = baseMapper.selectList(null);
-        List<Permission> resultList = buildPermission(permissions);
-        return resultList;
+        List<Permission> finalList = new ArrayList<>();
+        List<Permission> permissionList = baseMapper.selectList(null);
+        permissionList.stream().forEach(permissionNode->{
+            if ("0".equals(permissionNode.getPid())){
+                permissionNode.setLevel(1);
+                finalList.add(recurseSearchMenu(permissionNode,permissionList));
+            }
+        });
+        return finalList;
     }
 
     @Override
     public void removeChildById(String id) {
         List<String> idList = new ArrayList<>();
-        selectPermissionChildById(id,idList);
         idList.add(id);
+        recurseSearchChildrenId(id,idList);
+        baseMapper.deleteBatchIds(idList);
     }
 
-    private void selectPermissionChildById(String id, List<String> idList) {
+    @Override
+    public void doAssign(String roleId, String[] permissionIds) {
+        List<RolePermission> rolePermissionList = new ArrayList<>();
+        for (String permissionId : permissionIds) {
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setRoleId(roleId);
+            rolePermission.setPermissionId(permissionId);
+            rolePermissionList.add(rolePermission);
+        }
+        rolePermissionService.saveBatch(rolePermissionList);
+    }
+
+    private Permission recurseSearchMenu(Permission permissionNode, List<Permission> permissionList) {
+        permissionList.stream().forEach(permission -> {
+            if (permission.getPid().equals(permissionNode.getId())){
+                int level  =permissionNode.getLevel()+1;
+                permission.setLevel(level);
+                if (permissionNode.getChildren() == null) permissionNode.setChildren(new ArrayList<Permission>());
+                permissionNode.getChildren().add(recurseSearchMenu(permission,permissionList));
+            }
+        });
+        return permissionNode;
+    }
+
+    private void recurseSearchChildrenId(String id, List<String> idList) {
         LambdaQueryWrapper<Permission> permissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
         permissionLambdaQueryWrapper
                 .eq(Permission::getPid,id)
                 .select(Permission::getId);
-        List<Permission> childIdList = baseMapper.selectList(permissionLambdaQueryWrapper);
-
-        childIdList.stream().forEach(item->{
-            idList.add( item.getId());
-            selectPermissionChildById(item.getId(), idList);
+        List<Permission> permissionList = baseMapper.selectList(permissionLambdaQueryWrapper);
+        permissionList.stream().forEach(permission -> {
+            idList.add(permission.getId());
+            recurseSearchChildrenId(permission.getId(), idList);
         });
-    }
-
-    public static List<Permission> buildPermission(List<Permission> permissionList) {
-        List<Permission> finalList = new ArrayList<>();
-
-        for (Permission permissionNode : permissionList) {
-            if ("0".equals(permissionNode.getPid())) {
-                permissionNode.setLevel(1);
-                finalList.add(selectChildren(permissionNode, permissionList));
-            }
-        }
-        return finalList;
-    }
-
-    private static Permission selectChildren(Permission permissionNode, List<Permission> permissionList) {
-        for (Permission permission : permissionList) {
-            if (permissionNode.getId().equals(permission.getPid())) {
-                int level = permissionNode.getLevel() + 1;
-                permission.setLevel(level);
-                if (permissionNode.getChildren() == null) permissionNode.setChildren(new ArrayList<>());
-                permissionNode.getChildren().add(selectChildren(permission, permissionList));
-            }
-        }
-        return permissionNode;
     }
 }
 
